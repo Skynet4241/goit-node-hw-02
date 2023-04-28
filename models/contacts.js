@@ -66,10 +66,25 @@ const updateContact = async (id, { name, email, phone }) => {
   }
 };
 
+const updateStatusContact = async (id, { favorite }) => {
+  try {
+    const contacts = await listContacts();
+    const index = contacts.findIndex((item) => item.id === id);
+    if (index === -1) return null;
+    contacts[index] = { id, favorite };
+    await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+    return contacts[index];
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
 module.exports = {
   listContacts,
   getContactById,
   removeContact,
   addContact,
   updateContact,
+  updateStatusContact,
 };
