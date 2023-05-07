@@ -8,13 +8,14 @@ const auth = async (req, res, next) => {
 
   const [type, token] = authHeader.split(" ");
 
+  if (!token) {
+    throw RequestError(401, "Not authorized");
+  }
+
   if (type !== "Bearer") {
     throw RequestError(401, "Token type is not valid");
   }
 
-  if (!token) {
-    throw RequestError(401, "Not authorized");
-  }
   try {
     const { id } = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(id);
