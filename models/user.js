@@ -13,15 +13,12 @@ const userSchema = new Schema(
       unique: true,
       match: [/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, "email is not valid"],
     },
-    contacts: {
-      type: [Types.ObjectId],
-      ref: "contacts",
-    },
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
+    avatarURL: { type: String, default: "" },
     token: String,
   },
   { timestamps: true, versionKey: false }

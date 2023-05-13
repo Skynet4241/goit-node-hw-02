@@ -6,7 +6,9 @@ const updateContact = async (req, res) => {
   const { id } = req.user;
   const { name } = req.body;
 
-  const existingContact = await Contact.findOne({ name, owner: id });
+  const contactsList = await Contact.find({ owner: id });
+
+  const existingContact = contactsList.some((item) => item.name === name);
 
   if (existingContact) {
     throw RequestError(409, `Contact with name "${name}" already exists`);

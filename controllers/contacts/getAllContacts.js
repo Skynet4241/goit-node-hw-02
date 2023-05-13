@@ -7,6 +7,7 @@ const getAllContacts = async (req, res) => {
   const skip = (page - 1) * limit;
 
   const query = { owner: _id };
+
   if (favorite === "true") {
     query.favorite = true;
   }
