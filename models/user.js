@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
@@ -13,16 +13,20 @@ const userSchema = new Schema(
       unique: true,
       match: [/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/, "email is not valid"],
     },
-    contacts: {
-      type: [Types.ObjectId],
-      ref: "contacts",
-    },
     subscription: {
       type: String,
       enum: ["starter", "pro", "business"],
       default: "starter",
     },
     token: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, "Verify token is required"],
+    },
   },
   { timestamps: true, versionKey: false }
 );
@@ -38,4 +42,13 @@ const joiSubscriptionSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
 });
 
-module.exports = { User, userRegisterSchema, joiSubscriptionSchema };
+const joiMailSchema = Joi.object({
+  email: Joi.string().required(),
+});
+
+module.exports = {
+  User,
+  userRegisterSchema,
+  joiSubscriptionSchema,
+  joiMailSchema,
+};
